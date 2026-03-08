@@ -1,0 +1,14 @@
+/Users/alex/Desktop/OOD/game/obj/Debug/net9.0/game.GeneratedMSBuildEditorConfig.editorconfig
+/Users/alex/Desktop/OOD/game/obj/Debug/net9.0/game.AssemblyInfoInputs.cache
+/Users/alex/Desktop/OOD/game/obj/Debug/net9.0/game.AssemblyInfo.cs
+/Users/alex/Desktop/OOD/game/obj/Debug/net9.0/game.csproj.CoreCompileInputs.cache
+/Users/alex/Desktop/OOD/game/bin/Debug/net9.0/game
+/Users/alex/Desktop/OOD/game/bin/Debug/net9.0/game.deps.json
+/Users/alex/Desktop/OOD/game/bin/Debug/net9.0/game.runtimeconfig.json
+/Users/alex/Desktop/OOD/game/bin/Debug/net9.0/game.dll
+/Users/alex/Desktop/OOD/game/bin/Debug/net9.0/game.pdb
+/Users/alex/Desktop/OOD/game/obj/Debug/net9.0/game.dll
+/Users/alex/Desktop/OOD/game/obj/Debug/net9.0/refint/game.dll
+/Users/alex/Desktop/OOD/game/obj/Debug/net9.0/game.pdb
+/Users/alex/Desktop/OOD/game/obj/Debug/net9.0/game.genruntimeconfig.cache
+/Users/alex/Desktop/OOD/game/obj/Debug/net9.0/ref/game.dll
