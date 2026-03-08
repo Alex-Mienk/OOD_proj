@@ -17,7 +17,7 @@ public class Tile
     }
 
     public static Tile CreateFloor()
-        => new Tile(isBlocked: false, symbol: '.');
+        => new Tile(isBlocked: false, symbol: ' ');
 
     public static Tile CreateWall()
         => new Tile(isBlocked: true, symbol: '#');

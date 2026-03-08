@@ -25,35 +25,49 @@ public static class Render
 
         const int gap = 3;
         const int sidebarWidth = 70; // pad so old text doesn't remain
+        string topBottomBorder = "+" + new string('-', Room.Width) + "+";
 
-        for (int y = 0; y < Room.Height; y++)
+        for (int screenRow = 0; screenRow < Room.Height + 2; screenRow++)
         {
-            var row = new StringBuilder(Room.Width);
+            string left;
 
-            for (int x = 0; x < Room.Width; x++)
+            if (screenRow == 0 || screenRow == Room.Height + 1)
             {
-                if (player.X == x && player.Y == y)
+                left = topBottomBorder;
+            }
+            else
+            {
+                int y = screenRow - 1;
+                var row = new StringBuilder(Room.Width + 2);
+                row.Append('|');
+
+                for (int x = 0; x < Room.Width; x++)
                 {
-                    row.Append('@');
-                    continue;
+                    if (player.X == x && player.Y == y)
+                    {
+                        row.Append('@');
+                        continue;
+                    }
+
+                    var tile = room.GetTile(x, y);
+
+                    if (!tile.IsBlocked && tile.Items.Count > 0)
+                    {
+                        row.Append(tile.Items[^1].Symbol);
+                    }
+                    else
+                    {
+                        row.Append(tile.Symbol);
+                    }
                 }
 
-                var tile = room.GetTile(x, y);
-
-                if (!tile.IsBlocked && tile.Items.Count > 0)
-                {
-                    row.Append(tile.Items[^1].Symbol);
-                }
-                else
-                {
-                    row.Append(tile.Symbol);
-                }
+                row.Append('|');
+                left = row.ToString();
             }
 
-            string left = row.ToString().PadRight(Room.Width);
-            string right = (y < sidebar.Count ? sidebar[y] : string.Empty).PadRight(sidebarWidth);
+            string right = (screenRow < sidebar.Count ? sidebar[screenRow] : string.Empty).PadRight(sidebarWidth);
 
-            Console.Write(left);
+            Console.Write(left.PadRight(Room.Width + 2));
             Console.Write(new string(' ', gap));
             Console.Write(right);
             Console.WriteLine();
@@ -64,7 +78,7 @@ public static class Render
     {
         List<string> lines = new()
         {
-            $"PLAYER: {player.Name}",
+            $"PLAYER: {player.Symbol}",
             new string('-', 28),
 
             "EQUIPPED:",
@@ -99,7 +113,7 @@ public static class Render
             for (int i = 0; i < player.Inventory.Count; i++)
             {
                 var it = player.Inventory[i];
-                lines.Add($"  {i + 1}. {it.Symbol} {it.Name}");
+                lines.Add($"  {i + 1}. {it.Name}");
             }
         }
         lines.Add(string.Empty);
@@ -112,13 +126,7 @@ public static class Render
         lines.Add($"  AGR: {player.Aggression}");
         lines.Add($"  WIS: {player.Wisdom}");
 
-        lines.Add(string.Empty);
-        lines.Add("CONTROLS:");
-        lines.Add("  WASD - move");
-        lines.Add("  E    - pick up");
-        lines.Add("  Q    - quit");
-
-        while (lines.Count < Room.Height)
+        while (lines.Count < Room.Height + 2)
             lines.Add(string.Empty);
 
         return lines;

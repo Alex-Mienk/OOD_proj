@@ -5,13 +5,17 @@ public class Room
 {
     public const int Height = 20;
     public const int Width = 40;
-
     private readonly Tile[,] _grid;
-
+    
     public Room()
     {
         _grid = new Tile[Height, Width];
         Initialize();
+    }
+
+    public void PlaceWall(int x, int y)
+    {
+        _grid[y, x] = Tile.CreateWall();
     }
 
     private void Initialize()

@@ -7,7 +7,7 @@ using Game.IItems;
 public class Player
 {
     public Player(
-        char name,
+        char symbol,
         int health,
         int strength = 0,
         int dexterity = 0,
@@ -15,7 +15,7 @@ public class Player
         int aggression = 0,
         int wisdom = 0)
     {
-        Name = name;
+        Symbol = symbol;
         Health = health;
         Strength = strength;
         Dexterity = dexterity;
@@ -26,7 +26,7 @@ public class Player
         Y = 0;
     }
 
-    public char Name { get; }
+    public char Symbol { get; }
 
     public int X { get; private set; }
     public int Y { get; private set; }
@@ -37,23 +37,38 @@ public class Player
     public int Luck { get; private set; }
     public int Aggression { get; private set; }
     public int Wisdom { get; private set; }
-
-    // Presumably only for the weapons, ask on the lab!!!
     public IItem? LeftHand { get; private set; }
     public IItem? RightHand { get; private set; }
 
-    private readonly List<IItem> _inventory = new(); // Private - only the player can modify
-    public IReadOnlyList<IItem> Inventory => _inventory; // Public read-only for the renderer to have access
-
-    public void EquipLeft(IItem? item) => LeftHand = item;
-    public void EquipRight(IItem? item) => RightHand = item;
-    public void UnequipLeft() => LeftHand = null;
-    public void UnequipRight() => RightHand = null;
+    private readonly List<IItem> _inventory = new();
+    public IReadOnlyList<IItem> Inventory => _inventory;
 
     public void SetPosition(int x, int y)
     {
         X = x;
         Y = y;
+    }
+
+    public bool PickUp(IItem item)
+    {
+        _inventory.Add(item);
+        return true;
+    }
+
+    public bool PickUp(IWeapon weapon)
+    {
+        if (LeftHand == null)
+        {
+            LeftHand = weapon;
+            return true;
+        }
+
+        if (RightHand == null)
+        {
+            RightHand = weapon;
+            return true;
+        }
+        return false;
     }
 
     public bool TryMove(int dx, int dy, Room room)
@@ -80,7 +95,45 @@ public class Player
         if (item is null)
             return false;
 
-        _inventory.Add(item);
+        // item.PickUp(this);
+        // return true;
+        bool pickedUp = item.PickUp(this);
+        if (pickedUp)
+            return true;
+
+        room.PlaceItem(X, Y, item);
+        return false;
+    }
+
+    public bool TryDrop(Room room)
+    {
+        if (_inventory.Count == 0)
+            return false;
+
+        var item = _inventory[^1];
+        _inventory.RemoveAt(_inventory.Count - 1);
+
+        room.PlaceItem(X, Y, item);
+        return true;
+    }
+
+    public bool TryDropLeftHand(Room room)
+    {
+        if (LeftHand == null)
+            return false;
+
+        room.PlaceItem(X, Y, LeftHand);
+        LeftHand = null;
+        return true;
+    }
+
+    public bool TryDropRightHand(Room room)
+    {
+        if (RightHand == null)
+            return false;
+
+        room.PlaceItem(X, Y, RightHand);
+        RightHand = null;
         return true;
     }
 }
