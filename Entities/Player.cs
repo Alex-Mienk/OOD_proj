@@ -55,7 +55,7 @@ public class Player
         return true;
     }
 
-    public bool PickUp(IWeapon weapon)
+    public bool PickUp(Sword weapon)
     {
         if (LeftHand == null)
         {
@@ -69,6 +69,35 @@ public class Player
             return true;
         }
         return false;
+    }
+
+    public bool PickUp(DoubleSword weapon)
+    {
+        if (LeftHand == null && RightHand == null)
+        {
+            LeftHand = weapon;
+            RightHand = weapon;
+            return true;
+        }
+        return false;
+    }
+
+    public void DropFromLeft(IItem item)
+    {
+    }
+
+    public void DropFromLeft(DoubleSword weapon)
+    {
+        RightHand = null;
+    }
+
+    public void DropFromRight(IItem item)
+    {
+    }
+
+    public void DropFromRight(DoubleSword weapon)
+    {
+        LeftHand = null;
     }
 
     public bool TryMove(int dx, int dy, Room room)
@@ -95,8 +124,6 @@ public class Player
         if (item is null)
             return false;
 
-        // item.PickUp(this);
-        // return true;
         bool pickedUp = item.PickUp(this);
         if (pickedUp)
             return true;
@@ -122,8 +149,10 @@ public class Player
         if (LeftHand == null)
             return false;
 
-        room.PlaceItem(X, Y, LeftHand);
+        var item = LeftHand;
         LeftHand = null;
+        item.DropFromLeft(this);
+        room.PlaceItem(X, Y, item);
         return true;
     }
 
@@ -132,8 +161,10 @@ public class Player
         if (RightHand == null)
             return false;
 
-        room.PlaceItem(X, Y, RightHand);
+        var item = RightHand;
         RightHand = null;
+        item.DropFromRight(this);
+        room.PlaceItem(X, Y, item);
         return true;
     }
 }

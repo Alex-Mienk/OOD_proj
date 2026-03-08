@@ -1,11 +1,13 @@
 ﻿namespace Game;
 
+using Game.Components;
 using Game.Entities;
 using Game.IItems;
 using Game.Rendering;
 
 using Game.World;
 using System;
+
 
 
 /*
@@ -45,24 +47,36 @@ internal static class Program
             wisdom: 5);
 
 
-        // Spawn some items in the world for testing
-
+        // Spawn gold
         for (int i = 0; i < 5; i++)
         {
             var goldPos = RandomPosition(Room.Width, Room.Height);
             room.PlaceItem(goldPos.X, goldPos.Y, new Gold(10));   
         }
 
+        // Spawn coins
         for (int i = 0; i < 5; i++)
         {
             var coinpos = RandomPosition(Room.Width, Room.Height);
             room.PlaceItem(coinpos.X, coinpos.Y, new Coin(1));
         }
-
+        // Spawn weapons
         for(int i = 0; i < 3; i++)
         {
             var swordPos = RandomPosition(Room.Width, Room.Height);
             room.PlaceItem(swordPos.X, swordPos.Y, new Sword());
+        }
+        // Spawn weapons
+        for(int i = 0; i < 2; i++)
+        {
+            var swordPos = RandomPosition(Room.Width, Room.Height);
+            room.PlaceItem(swordPos.X, swordPos.Y, new DoubleSword());
+        }
+        // Spawn walls
+        for (int i = 0; i < 20; i++)
+        {
+            var wallPos = RandomPosition(Room.Width, Room.Height);
+            room.PlaceWall(wallPos.X, wallPos.Y);
         }
         
         player.SetPosition(0, 0);
@@ -102,11 +116,11 @@ internal static class Program
                     player.TryDrop(room);
                     break;
 
-                case ConsoleKey.X:
+                case ConsoleKey.RightArrow:
                     player.TryDropRightHand(room);
                     break;
 
-                case ConsoleKey.Z:
+                case ConsoleKey.LeftArrow:
                     player.TryDropLeftHand(room);
                     break;
                     

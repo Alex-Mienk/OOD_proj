@@ -8,6 +8,8 @@ public interface IItem
     string Name { get; }
 
     bool PickUp(Player player);
+    void DropFromLeft(Player player);
+    void DropFromRight(Player player);
 }
 
 public interface IWeapon : IItem
@@ -32,6 +34,16 @@ public class Gold : IItem
     {
         return player.PickUp(this);
     }
+
+    public void DropFromLeft(Player player)
+    {
+        player.DropFromLeft(this);
+    }
+
+    public void DropFromRight(Player player)
+    {
+        player.DropFromRight(this);
+    }
 }
 
 public class Coin : IItem
@@ -49,18 +61,16 @@ public class Coin : IItem
     {
         return player.PickUp(this);
     }
-}
 
-
-public class Sword : IWeapon
-{
-    public char Symbol => '!';
-    public string Name => "Sword";
-    public int Damage => 5;
-    public bool IsTwoHanded => false;
-    public bool PickUp(Player player)
+    public void DropFromLeft(Player player)
     {
-        return player.PickUp(this);
+        player.DropFromLeft(this);
     }
 
+    public void DropFromRight(Player player)
+    {
+        player.DropFromRight(this);
+    }
 }
+
+
