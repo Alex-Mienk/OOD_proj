@@ -8,17 +8,6 @@ using Game.Rendering;
 using Game.World;
 using System;
 
-
-
-/*
-
-TODO:
-- Inventory management (pickup, drop, equip, unequip) - still not fully done yet
-- Weapons addition
-- Spawning items in the world
-
-*/
-
 internal static class Program
 {
     private static readonly Random Rng = new();
